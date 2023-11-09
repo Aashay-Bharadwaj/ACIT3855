@@ -1,0 +1,188 @@
+openapi: 3.0.0
+info:
+  description: This API receives reading events from medical devices
+  version: "1.0.0"
+  title: Reading API
+  contact:
+    email: mmulder10@bcit.ca
+tags:
+  - name: store
+    description: Operations available to medical devices
+paths:
+  /inventory-item:
+    post:
+      tags:
+        - store
+      summary: reports an inventory item reading
+      operationId: app.report_inventory_item
+      description: Adds a new inventory item
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryItem'
+        description: Reading item to add
+    get:
+      tags:
+        - store
+      summary: gets new Inventory items
+      operationId: app.get_inventory_item
+      description: Gets blood pressure readings added after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33.001Z
+      responses:
+        '200':
+          description: Successfully returned a list of Inventory Items events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+
+  /standard-order:
+    post:
+      tags:
+        - store
+      summary: reports a standard order
+      operationId: app.report_standard_order
+      description: Adds a new standard order
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StandardOrder'
+        description: Reading item to add
+    get:
+      tags:
+        - store
+      summary: gets new standard orders
+      operationId: app.get_standard_order
+      description: Gets heart rate readings added after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33.001Z
+      responses:
+        '200':
+          description: Successfully returned a list of heart rate events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StandardOrder'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+
+components:
+  schemas:
+    InventoryItem:
+      required:
+        - product_id
+        - SKU
+        - product_name
+        - price
+        - compatibility
+        - timestamp
+        - trace_id
+      properties:
+        product_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        SKU:
+          type: string
+          example: A12345
+        product_name:
+          type: string
+          example: CTS Air intake
+        price:
+          type: integer  # Corrected the data type
+          example: 100
+        compatibility:
+          type: string
+          example: BMW f32 2010-2016
+        timestamp:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        trace_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      type: object
+
+    StandardOrder:
+      required:
+        - order_id
+        - customer_name
+        - product_name
+        - shipping_address
+        - total_amount
+        - timestamp
+        - trace_id
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        customer_name:
+          type: string
+          example: Aashay Bharadwaj
+        product_name:
+          type: string
+          example: BMW Charge pipe
+        shipping_address:
+          type: string
+          example: 1234 Scott Rd
+        total_amount:
+          type: integer  # Corrected the data type
+          example: 200
+        timestamp:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        trace_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      type: object

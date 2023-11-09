@@ -1,0 +1,155 @@
+openapi: 3.0.0
+info:
+  description: This API receives reading events from medical devices
+  version: "1.0.0"
+  title: Reading API
+  contact:
+    email: rafi_mohammad@bcit.ca
+tags:
+  - name: store
+    description: Operations available to medical devices
+paths:
+  /inventory-item:
+    get:
+      summary: gets an inventory item reading from history
+      operationId: app.get_inventory_item
+      description: Gets inventory item from the event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets the item at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Successfully returned an inventory item event
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /standard-order:
+    get:
+      summary: gets a standard order reading from history
+      operationId: app.get_standard_order
+      description: Gets standard order from the event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets the order at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Successfully returned a Standard Order event
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/StandardOrder'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+
+components:
+  schemas:
+    InventoryItem:
+      required:
+        - product_id
+        - SKU
+        - product_name
+        - price
+        - compatibility
+        - timestamp
+        - trace_id
+      properties:
+        product_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        SKU:
+          type: string
+          example: A12345
+        product_name:
+          type: string
+          example: CTS Air intake
+        price:
+          type: integer  # Corrected the data type
+          example: 100
+        compatibility:
+          type: string
+          example: BMW f32 2010-2016
+        timestamp:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        trace_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      type: object
+    StandardOrder:
+      required:
+        - order_id
+        - customer_name
+        - product_name
+        - shipping_address
+        - total_amount
+        - timestamp
+        - trace_id
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        customer_name:
+          type: string
+          example: Aashay Bharadwaj
+        product_name:
+          type: string
+          example: BMW Charge pipe
+        shipping_address:
+          type: string
+          example: 1234 Scott Rd
+        total_amount:
+          type: integer  # Corrected the data type
+          example: 200
+        timestamp:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        trace_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      type: object

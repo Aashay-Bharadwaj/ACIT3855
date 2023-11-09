@@ -1,0 +1,56 @@
+openapi: 3.0.0
+info:
+  description: This API provides event stats
+  version: "1.0.0"
+  title: Stats API
+  contact:
+    email: bharadwajaashay@gmail.com
+
+paths:
+  /stats:
+    get:
+      summary: Gets the event stats
+      operationId: app.get_stats
+      description: Gets Inventory Item and Standard order processsed statistics
+      responses:
+        '200':
+          description: Successfully returned a list of inventory/order events
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ReadingStats'
+        '404':
+          description: Statistics do not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    ReadingStats:
+      required:
+      - num_inventory_items
+      - max_item_price
+      - num_orders
+      - max_order_price
+      properties:
+        num_inventory_items:
+          type: integer
+          example: 500000
+        max_item_price:
+          type: integer
+          example: 200
+        num_orders:
+          type: integer
+          example: 500000
+        max_order_price:
+          type: integer
+          example: 250
+      type: object
+
