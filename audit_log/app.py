@@ -120,6 +120,7 @@ def get_inventory_item(index):
             msg_str = msg.value.decode('utf-8')
             msg = json.loads(msg_str)
             if msg.get('type') == 'item':
+                logger.info(msg)
                 if count_item == index:
                     print(msg)
                     return msg, 200
@@ -175,6 +176,7 @@ def get_standard_order(index):
             msg = json.loads(msg_str)
             
             if msg.get('type') == 'order':
+                logger.info(msg)
                 if count_order == index:
                     print(msg)
                     return msg, 200
