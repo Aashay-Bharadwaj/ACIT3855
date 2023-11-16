@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from base import Base
 from inventory_item import InventoryItem
 from standard_order import StandardOrder
-
+from flask_cors import CORS, cross_origin
 
 import yaml
 import logging
