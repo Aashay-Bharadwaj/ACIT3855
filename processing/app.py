@@ -59,7 +59,7 @@ def populate_stats():
     if "last_updated" in stats:
         last_updated = stats["last_updated"]
 
-    response = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + '2016-11-16T03:26:29Z')
+    response = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + '2016-01-16T03:26:29Z')
 
     if response.status_code == 200:
         if "num_inventory_items" in stats.keys() and stats["num_inventory_items"] < len(response.json()):
@@ -80,7 +80,7 @@ def populate_stats():
 
         logger.info("Processed %d Inventory Item readings" % len(response.json()))
 
-    response = requests.get(app_config["eventstore"]["url"] + "/standard-order?timestamp=" + last_updated)
+    response = requests.get(app_config["eventstore"]["url"] + "/standard-order?timestamp=" + '2016-01-16T03:26:29Z')
 
     if response.status_code == 200:
         if "num_orders" in stats.keys():
