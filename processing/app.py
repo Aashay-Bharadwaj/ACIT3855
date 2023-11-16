@@ -1,6 +1,6 @@
 import connexion
 from connexion import NoContent
-
+from flask_cors import CORS, cross_origin
 import datetime
 import os
 
