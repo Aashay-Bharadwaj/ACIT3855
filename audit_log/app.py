@@ -6,7 +6,7 @@ from base import Base
 from inventory_item import InventoryItem
 from standard_order import StandardOrder
 from flask_cors import CORS, cross_origin
-
+from apscheduler.schedulers.background import BackgroundScheduler
 import yaml
 import logging
 import logging.config
@@ -192,37 +192,37 @@ def get_standard_order(index):
 
 
 
-def process_messages():
-    """ Process event messages """
-    hostname = "%s:%d" % (app_config["events"]["hostname"],
-                          app_config["events"]["port"])
-    client = KafkaClient(hosts=hostname)
-    topic = client.topics[str.encode(app_config["events"]["topic"])]
+# def process_messages():
+#     """ Process event messages """
+#     hostname = "%s:%d" % (app_config["events"]["hostname"],
+#                           app_config["events"]["port"])
+#     client = KafkaClient(hosts=hostname)
+#     topic = client.topics[str.encode(app_config["events"]["topic"])]
 
-    # Create a consume on a consumer group, that only reads new messages
-    # (uncommitted messages) when the service re-starts (i.e., it doesn't
-    # read all the old messages from the history in the message queue).
-    consumer = topic.get_simple_consumer(consumer_group=b'event_group',
-                                         reset_offset_on_start=False,
-                                         auto_offset_reset=OffsetType.LATEST)
+#     # Create a consume on a consumer group, that only reads new messages
+#     # (uncommitted messages) when the service re-starts (i.e., it doesn't
+#     # read all the old messages from the history in the message queue).
+#     consumer = topic.get_simple_consumer(consumer_group=b'event_group',
+#                                          reset_offset_on_start=False,
+#                                          auto_offset_reset=OffsetType.LATEST)
 
-    # This is blocking - it will wait for a new message
-    for msg in consumer:
-        msg_str = msg.value.decode('utf-8')
-        msg = json.loads(msg_str)
-        logger.info("Message: %s" % msg)
+#     # This is blocking - it will wait for a new message
+#     for msg in consumer:
+#         msg_str = msg.value.decode('utf-8')
+#         msg = json.loads(msg_str)
+#         logger.info("Message: %s" % msg)
 
-        payload = msg["payload"]
+#         payload = msg["payload"]
 
-        if msg["type"] == "item":  # Change this to your event type
-            # Store the event1 (i.e., the payload) to the DB
-            report_inventory_item(payload)
-        elif msg["type"] == "order":  # Change this to your event type
-            # Store the event2 (i.e., the payload) to the DB
-            report_standard_order(payload)
+#         if msg["type"] == "item":  # Change this to your event type
+#             # Store the event1 (i.e., the payload) to the DB
+#             report_inventory_item(payload)
+#         elif msg["type"] == "order":  # Change this to your event type
+#             # Store the event2 (i.e., the payload) to the DB
+#             report_standard_order(payload)
 
-        # Commit the new message as being read
-        consumer.commit_offsets()
+#         # Commit the new message as being read
+#         consumer.commit_offsets()
 
 
 app = connexion.FlaskApp(__name__, specification_dir='')
@@ -231,8 +231,6 @@ CORS(app.app)
 app.app.config['CORS_HEADERS'] = 'Content-Type'
 
 if __name__ == "__main__":
-    t1 = Thread(target=process_messages)
-    t1.setDaemon(True)
-    t1.start()
+    # init_scheduler()
 
     app.run(port=8110)
