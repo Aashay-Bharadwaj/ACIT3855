@@ -30,7 +30,7 @@ def get_stats():
         fh = open(app_config["datastore"]["filename"])
         full_stats = json.load(fh)
         fh.close()
-
+        logger.info("Start Periodic Processing")
         stats = {}
         if "num_inventory_items" in full_stats:
             stats["num_inventory_items"] = full_stats["num_inventory_items"]
