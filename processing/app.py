@@ -40,7 +40,7 @@ def get_stats():
             stats["num_orders"] = full_stats["num_orders"]
         if "max_order_price" in full_stats:
             stats["max_order_price"] = full_stats["max_order_price"]
-
+        
         logger.info("Found valid stats")
         logger.debug(stats)
 
@@ -59,13 +59,11 @@ def populate_stats():
     if "last_updated" in stats:
         last_updated = stats["last_updated"]
 
-    response = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + '2016-01-16T03:26:29Z')
+    response = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + '2015-08-29T09:12:33.001Z')
 
     if response.status_code == 200:
-        if "num_inventory_items" in stats.keys() and stats["num_inventory_items"] < len(response.json()):
-            stats["num_inventory_items"] = len(response.json())
-        elif"num_inventory_items" in stats.keys() and stats["num_inventory_items"] > len(response.json()):
-            stats["num_inventory_items"] = stats["num_inventory_items"]
+        if "num_inventory_items" in stats.keys():
+            stats["num_inventory_items"] += len(response.json())
         else:
             stats["num_inventory_items"] = len(response.json())
 
@@ -78,13 +76,13 @@ def populate_stats():
 
             logger.debug("Processed Inventory Item event with id of %s" % event["trace_id"])
 
-        logger.info("Processed %d Inventory Item readings" % len(response.json()))
+        logger.info("Processed %d Inventory readings" % len(response.json()))
 
-    response = requests.get(app_config["eventstore"]["url"] + "/standard-order?timestamp=" + '2016-01-16T03:26:29Z')
+    response = requests.get(app_config["eventstore"]["url"] + "/heart-rate?timestamp=" + '2015-08-29T09:12:33.001Z')
 
     if response.status_code == 200:
         if "num_orders" in stats.keys():
-            stats["num_orders"] = len(response.json())
+            stats["num_orders"] += len(response.json())
         else:
             stats["num_orders"] = len(response.json())
 
@@ -95,9 +93,9 @@ def populate_stats():
             elif "max_order_price" not in stats.keys():
                 stats["max_order_price"] = event["total_amount"]
 
-            logger.debug("Processed Standard Order event with id of %s" % event["trace_id"])
+            logger.debug("Processed Standard order event with id of %s" % event["trace_id"])
 
-        logger.info("Processed %d Standard Order readings" % len(response.json()))
+        logger.info("Processed %d Order readings" % len(response.json()))
 
     stats["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -115,8 +113,8 @@ def get_latest_processing_stats():
         return full_stats
 
     return {"num_inventory_items": 0,
+            "max_inventory_price": 0,
             "num_orders": 0,
-            "max_item_price": 0,
             "max_order_price": 0,
             "last_updated": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}
 
