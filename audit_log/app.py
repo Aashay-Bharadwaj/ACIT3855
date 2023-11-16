@@ -123,7 +123,7 @@ def get_inventory_item(index):
                 logger.info(msg)
                 if count_item == index:
                     print(msg)
-                    return msg, 200
+                    return msg["payload"], 200
                 else:
                     count_item+= 1
             # Find the event at the index you want and
@@ -179,7 +179,7 @@ def get_standard_order(index):
                 logger.info(msg)
                 if count_order == index:
                     print(msg)
-                    return msg, 200
+                    return msg["payload"], 200
                 else:
                     count_order+= 1
             # Find the event at the index you want and
