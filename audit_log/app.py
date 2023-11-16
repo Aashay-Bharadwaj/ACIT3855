@@ -6,7 +6,7 @@ from base import Base
 from inventory_item import InventoryItem
 from standard_order import StandardOrder
 from flask_cors import CORS, cross_origin
-from apscheduler.schedulers.background import BackgroundScheduler
+# from apscheduler.schedulers.background import BackgroundScheduler
 import yaml
 import logging
 import logging.config
