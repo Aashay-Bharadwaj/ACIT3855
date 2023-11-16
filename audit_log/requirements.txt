@@ -5,3 +5,4 @@ pykafka==2.8.0
 SQLAlchemy==1.4.50
 pyMySQL==1.0.0
 pykafka==2.8.0
+flask-cors==3.0.10
