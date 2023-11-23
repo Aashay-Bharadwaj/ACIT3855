@@ -52,7 +52,7 @@ def populate_stats():
     print(time)
     next_time = datetime.datetime.now()
     item = requests.get(f'{app_config["eventstore"]["url"]}/inventory-item', params = {"timestamp": "2015-08-29T09:12:33.001Z"})
-    order = requests.get(f'{app_config["eventstore"]["url"]}/stanadard-order', params = {"timestamp": "2015-08-29T09:12:33.001Z"})
+    order = requests.get(f'{app_config["eventstore"]["url"]}/standard-order', params = {"timestamp": "2015-08-29T09:12:33.001Z"})
     results = []
     item_no = 0
     order_no = 0
