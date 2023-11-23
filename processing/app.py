@@ -1,146 +1,94 @@
 import connexion
-from connexion import NoContent
-from flask_cors import CORS, cross_origin
 import datetime
-import os
-
-from apscheduler.schedulers.background import BackgroundScheduler
-import json
 import requests
-
-import logging.config
+import json
+from flask import Response
+from flask_cors import CORS, cross_origin
 import yaml
+import logging, logging.config
+import uuid
+from apscheduler.schedulers.background import BackgroundScheduler
 
-# External Application Configuration
+app = connexion.FlaskApp(__name__, specification_dir='')
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
+
 with open('app_conf.yml', 'r') as f:
     app_config = yaml.safe_load(f.read())
 
-# External Logging Configuration
 with open('log_conf.yml', 'r') as f:
     log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
 
 logger = logging.getLogger('basicLogger')
 
-
 def get_stats():
-    """ Gets processing stats """
+    logger.info("Request for stats has begun.")
+    
+    try:
+        with open(app_config['datastore']['filename'], 'r') as file:
+            stats = json.load(file)
+    except:
+        return Response("Statistics do not exist", 404)
+    
+    obj = {"num_reports": stats['num_reports'], "num_infrared_reports": stats["num_infrared_reports"],
+           "num_patrol_reports": stats["num_patrol_reports"], "num_positive_status": stats["num_positive_status"], "timestamp": stats['timestamp']}
+    
+    logger.debug(f'{obj}')
 
-    if os.path.isfile(app_config["datastore"]["filename"]):
-        fh = open(app_config["datastore"]["filename"])
-        full_stats = json.load(fh)
-        fh.close()
-        logger.info("Start Get stats Processing")
-        stats = {}
-        if "num_inventory_items" in full_stats:
-            stats["num_inventory_items"] = full_stats["num_inventory_items"]
-        if "max_item_price" in full_stats:
-            stats["max_item_price"] = full_stats["max_item_price"]
-        if "num_orders" in full_stats:
-            stats["num_orders"] = full_stats["num_orders"]
-        if "max_order_price" in full_stats:
-            stats["max_order_price"] = full_stats["max_order_price"]
-        
-        logger.info("Found valid stats")
-        logger.debug(stats)
+    logger.info("Request has completed.")
 
-        return stats, 200
-
-    return NoContent, 404
+    return Response(json.dumps(obj), 200)
+    
 
 
 def populate_stats():
-    """ Periodically update stats """
-    logger.info("Start populate stats Processing")
+    logger.info("Start Periodic Processing")
 
-    stats = get_latest_processing_stats()
+    with open(app_config['datastore']['filename'], 'r') as file:
+        stats = json.load(file)
+    
+    time = stats['timestamp']
+    print(time)
+    next_time = datetime.datetime.now()
+    patrols = requests.get(f'{app_config["eventstore"]["url"]}/reports/patrols', params = {"timestamp": time})
+    infrared = requests.get(f'{app_config["eventstore"]["url"]}/reports/infrared', params = {"timestamp": time})
+    results = []
+    infra = 0
+    pat = 0
+    try:
+        for i in patrols.json():
+            results.append(i)
+            infra += 1
+        for i in infrared.json():
+            results.append(i)
+            pat += 1
+    except:
+        logger.info('Json decode error. Results list is empty.')
+        return
+    if patrols.status_code != 200:
+        logger.error("Status Code not 200")
+    print(results)
+    logger.info(f'{len(results)} results were received.')
 
-    last_updated = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-    if "last_updated" in stats:
-        last_updated = stats["last_updated"]
+    json_obj = {'num_reports': stats['num_reports'] + len(results), 'num_infrared_reports': stats['num_infrared_reports'] + infra,
+                'num_patrol_reports': stats['num_patrol_reports'] + pat, 'num_positive_status': stats['num_positive_status'] + 0, 'timestamp':next_time
+                }
 
-    response = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + '2015-08-29T09:12:33.001Z')
-
-    logger.info(response.status_code)
-    if response.status_code == 200:
-        if "num_inventory_items" in stats.keys():
-            stats["num_inventory_items"] += len(response.json())
-        else:
-            stats["num_inventory_items"] = len(response.json())
-
-        for event in response.json():
-            if "max_item_price" in stats.keys() and \
-                event["price"] > stats["max_item_price"]:
-                stats["max_item_price"] = event["price"]
-            elif "max_item_price" not in stats.keys():
-                stats["max_item_price"] = event["price"]
-
-            logger.debug("Processed Inventory Item event with id of %s" % event["trace_id"])
-
-        logger.info("Processed %d Inventory readings" % len(response.json()))
-
-    response = requests.get(app_config["eventstore"]["url"] + "/standard-order?timestamp=" + '2015-08-29T09:12:33.001Z')
-
-    if response.status_code == 200:
-        if "num_orders" in stats.keys():
-            stats["num_orders"] += len(response.json())
-        else:
-            stats["num_orders"] = len(response.json())
-
-        for event in response.json():
-            if "max_order_price" in stats.keys() and \
-                    event["total_amount"] > stats["max_order_price"]:
-                stats["max_order_price"] = event["total_amount"]
-            elif "max_order_price" not in stats.keys():
-                stats["max_order_price"] = event["total_amount"]
-
-            logger.debug("Processed Standard order event with id of %s" % event["trace_id"])
-
-        logger.info("Processed %d Order readings" % len(response.json()))
-
-    stats["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-
-    write_processing_stats(stats)
-
-    logger.info("Done Periodic Processing")
-
-
-def get_latest_processing_stats():
-    """ Gets the latest stats object, or None if there isn't one """
-    if os.path.isfile(app_config["datastore"]["filename"]):
-        fh = open(app_config["datastore"]["filename"])
-        full_stats = json.load(fh)
-        fh.close()
-        return full_stats
-
-    return {"num_inventory_items": 0,
-            "max_inventory_price": 0,
-            "num_orders": 0,
-            "max_order_price": 0,
-            "last_updated": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}
-
-
-def write_processing_stats(stats):
-    """ Writes a new stats object """
-    fh = open(app_config["datastore"]["filename"], "w")
-    fh.write(json.dumps(stats))
-    fh.close()
-
+    json_obj = json.dumps(json_obj, indent=4, default=str)
+    with open(app_config['datastore']['filename'], "w") as outfile:
+        outfile.write(json_obj)
+    print('written timestamp')
 
 def init_scheduler():
-    """ Initializes the periodic background processing """
     sched = BackgroundScheduler(daemon=True)
     sched.add_job(populate_stats,
-                  'interval',
-                  seconds=app_config['scheduler']['period_sec'])
+                'interval',
+                seconds=app_config['scheduler']['period_sec'])
     sched.start()
 
-
-app = connexion.FlaskApp(__name__, specification_dir='')
 app.add_api("openapi.yml", strict_validation=True, validate_responses=True)
-CORS(app.app)
-app.app.config['CORS_HEADERS'] = 'Content-Type'
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     init_scheduler()
-    app.run(port=8100)
+    app.run(port='8100')
