@@ -39,6 +39,7 @@ components:
       - max_item_price
       - num_orders
       - max_order_price
+      - timestamp
       properties:
         num_inventory_items:
           type: integer
@@ -52,5 +53,8 @@ components:
         max_order_price:
           type: integer
           example: 250
+        timestamp:
+          type: string
+          example: "2023-11-02 09:41:25.829461"
       type: object
 
