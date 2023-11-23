@@ -59,7 +59,7 @@ def populate_stats():
     # if "last_updated" in stats:
     #     last_updated = stats["last_updated"]
 
-    response = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + last_updated)
+    response = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + "2015-08-29T09:12:33.001Z")
 
     if response.status_code == 200:
         if "num_inventory_items" in stats.keys():
