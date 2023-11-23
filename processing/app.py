@@ -66,9 +66,7 @@ def populate_stats():
             results_item.append(i)
             item_no += 1
         for i in order.json():
-            if i["total_amount"] > stats['max_order_price']:
-                stats['max_order_price'] = i["total_amount"]
-            results_order.append(i)
+            print(i)
             order_no += 1
     except:
         logger.info('Json decode error. Results list is empty.')
