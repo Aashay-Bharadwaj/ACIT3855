@@ -59,6 +59,7 @@ def populate_stats():
     order_no = 0
     try:
         for i in item.json():
+            print(f'Inventory Item {i}')
             results_item.append(i)
             item_no += 1
         for i in order.json():
