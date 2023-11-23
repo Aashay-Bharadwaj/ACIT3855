@@ -52,7 +52,7 @@ def populate_stats():
     print(time)
     next_time = datetime.datetime.now()
     item = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + '2013-11-23T08:30:00Z')
-    order = requests.get(app_config["eventstore"]["url"] + "/standard-order?timestamp=" + '2015-08-29T09:12:33.001Z')
+    order = requests.get(app_config["eventstore"]["url"] + "/standard-order?timestamp=" + '2013-11-23T08:30:00Z')
     results_item = []
     results_order = []
     item_no = 0
@@ -71,7 +71,7 @@ def populate_stats():
     if item.status_code != 200:
         logger.error("Status Code not 200")
     print(results_item)
-    logger.info(f'{len(results_item)} results were received.')
+    logger.info(f'{results_item} results were received.')
 
     json_obj = {'num_inventory_items': stats['num_inventory_items'] + len(results_item), 'num_orders': stats['num_orders'] + len(results_order),
                 'max_item_price': stats['max_item_price'], 'max_order_price': stats['max_order_price'] , 'last_updated':next_time
