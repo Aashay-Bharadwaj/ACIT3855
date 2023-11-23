@@ -79,7 +79,7 @@ def populate_stats():
 
         logger.info("Processed %d Inventory readings" % len(response.json()))
 
-    response = requests.get(app_config["eventstore"]["url"] + "/heart-rate?timestamp=" + '2015-08-29T09:12:33.001Z')
+    response = requests.get(app_config["eventstore"]["url"] + "/standard-order?timestamp=" + '2015-08-29T09:12:33.001Z')
 
     if response.status_code == 200:
         if "num_orders" in stats.keys():
