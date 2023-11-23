@@ -58,15 +58,12 @@ def populate_stats():
     item_no = 0
     order_no = 0
     try:
-        if stats['num_inventory_items'] < len(item):
-            stats['num_inventory_items'] = len(item)
         for i in item.json():
-            if i['price'] > stats['max_item_price']:
-                stats['max_item_price'] = i['price']
+            print(f'Inventory Item {i}')
+            print(f'Inventory Item {i["price"]}')
             results_item.append(i)
-            item_no += 1
         for i in order.json():
-            print(i)
+            print(f'Order: {i}')
             order_no += 1
     except:
         logger.info('Json decode error. Results list is empty.')
