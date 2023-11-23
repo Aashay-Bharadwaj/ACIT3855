@@ -61,7 +61,7 @@ def populate_stats():
 
     response = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + '2015-08-29T09:12:33.001Z')
 
-    logger.info(response.json())
+    logger.info(response.status_code)
     if response.status_code == 200:
         if "num_inventory_items" in stats.keys():
             stats["num_inventory_items"] += len(response.json())
