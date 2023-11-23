@@ -51,8 +51,8 @@ def populate_stats():
     time = stats['last_updated']
     print(time)
     next_time = datetime.datetime.now()
-    item = requests.get(f'{app_config["eventstore"]["url"]}/inventory-item', params = {"timestamp": "2015-08-29T09:12:33.001Z"})
-    order = requests.get(f'{app_config["eventstore"]["url"]}/standard-order', params = {"timestamp": "2015-08-29T09:12:33.001Z"})
+    item = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + "2015-08-29T09:12:33.001Z")
+    order = requests.get(app_config["eventstore"]["url"] + "/standard-order?timestamp=" + "2015-08-29T09:12:33.001Z")
     results = []
     item_no = 0
     order_no = 0
