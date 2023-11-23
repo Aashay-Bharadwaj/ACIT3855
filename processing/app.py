@@ -55,9 +55,9 @@ def populate_stats():
 
     stats = get_latest_processing_stats()
 
-    last_updated = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-    if "last_updated" in stats:
-        last_updated = stats["last_updated"]
+    last_updated = "2015-08-29T09:12:33.001Z"
+    # if "last_updated" in stats:
+    #     last_updated = stats["last_updated"]
 
     response = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + last_updated)
 
