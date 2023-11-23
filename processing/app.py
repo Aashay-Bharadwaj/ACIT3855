@@ -31,8 +31,8 @@ def get_stats():
     except:
         return Response("Statistics do not exist", 404)
     
-    obj = {"num_reports": stats['num_reports'], "num_infrared_reports": stats["num_infrared_reports"],
-           "num_patrol_reports": stats["num_patrol_reports"], "num_positive_status": stats["num_positive_status"], "timestamp": stats['timestamp']}
+    obj = {"num_inventory_items": stats['num_inventory_items'], "num_orders": stats["num_orders"],
+           "max_item_price": stats["max_item_price"], "max_order_price": stats["max_order_price"], "last_updated": stats['last_updated']}
     
     logger.debug(f'{obj}')
 
@@ -43,36 +43,36 @@ def get_stats():
 
 
 def populate_stats():
-    logger.info("Start Periodic Processing")
+    logger.info("Start POPULATE stats Processing")
 
     with open(app_config['datastore']['filename'], 'r') as file:
         stats = json.load(file)
     
-    time = stats['timestamp']
+    time = stats['last_updated']
     print(time)
     next_time = datetime.datetime.now()
-    patrols = requests.get(f'{app_config["eventstore"]["url"]}/reports/patrols', params = {"timestamp": time})
-    infrared = requests.get(f'{app_config["eventstore"]["url"]}/reports/infrared', params = {"timestamp": time})
+    item = requests.get(f'{app_config["eventstore"]["url"]}/inventory-item', params = {"timestamp": "2015-08-29T09:12:33.001Z"})
+    order = requests.get(f'{app_config["eventstore"]["url"]}/stanadard-order', params = {"timestamp": "2015-08-29T09:12:33.001Z"})
     results = []
-    infra = 0
-    pat = 0
+    item_no = 0
+    order_no = 0
     try:
-        for i in patrols.json():
+        for i in item.json():
             results.append(i)
-            infra += 1
-        for i in infrared.json():
+            item_no += 1
+        for i in order.json():
             results.append(i)
-            pat += 1
+            order_no += 1
     except:
         logger.info('Json decode error. Results list is empty.')
         return
-    if patrols.status_code != 200:
+    if item.status_code != 200:
         logger.error("Status Code not 200")
     print(results)
     logger.info(f'{len(results)} results were received.')
 
-    json_obj = {'num_reports': stats['num_reports'] + len(results), 'num_infrared_reports': stats['num_infrared_reports'] + infra,
-                'num_patrol_reports': stats['num_patrol_reports'] + pat, 'num_positive_status': stats['num_positive_status'] + 0, 'timestamp':next_time
+    json_obj = {'num_inventory_items': stats['num_inventory_items'] + item_no, 'num_orders': stats['num_orders'] + order_no,
+                'max_item_price': stats['max_item_price'], 'max_order_price': stats['max_order_price'] , 'last_updated':next_time
                 }
 
     json_obj = json.dumps(json_obj, indent=4, default=str)
