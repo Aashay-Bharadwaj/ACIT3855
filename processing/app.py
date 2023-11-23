@@ -69,8 +69,8 @@ def populate_stats():
         return
     if item.status_code != 200:
         logger.error("Status Code not 200")
-    print(results)
-    logger.info(f'{len(results)} results were received.')
+    print(results_item)
+    logger.info(f'{len(results_item)} results were received.')
 
     json_obj = {'num_inventory_items': stats['num_inventory_items'] + len(results_item), 'num_orders': stats['num_orders'] + len(results_order),
                 'max_item_price': stats['max_item_price'], 'max_order_price': stats['max_order_price'] , 'last_updated':next_time
