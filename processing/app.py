@@ -53,15 +53,16 @@ def populate_stats():
     next_time = datetime.datetime.now()
     item = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + '2015-08-29T09:12:33.001Z')
     order = requests.get(app_config["eventstore"]["url"] + "/standard-order?timestamp=" + '2015-08-29T09:12:33.001Z')
-    results = []
+    results_item = []
+    results_order = []
     item_no = 0
     order_no = 0
     try:
         for i in item.json():
-            results.append(i)
+            results_item.append(i)
             item_no += 1
         for i in order.json():
-            results.append(i)
+            results_order.append(i)
             order_no += 1
     except:
         logger.info('Json decode error. Results list is empty.')
@@ -71,7 +72,7 @@ def populate_stats():
     print(results)
     logger.info(f'{len(results)} results were received.')
 
-    json_obj = {'num_inventory_items': stats['num_inventory_items'] + len(results), 'num_orders': stats['num_orders'] + order_no,
+    json_obj = {'num_inventory_items': stats['num_inventory_items'] + len(results_item), 'num_orders': stats['num_orders'] + len(results_order),
                 'max_item_price': stats['max_item_price'], 'max_order_price': stats['max_order_price'] , 'last_updated':next_time
                 }
 
