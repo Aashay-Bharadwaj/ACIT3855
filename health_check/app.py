@@ -60,15 +60,21 @@ def populate_status():
     receiver = requests.get(app_config["eventstore"]["url_receiver"] + "/health", timeout=5)
     print(audit.status_code)
     if audit.status_code == 200:
-        stats['audit'] = "running🔥"
-        
+        stats['audit'] = "Running"
     else:
-        stats['audit'] = "running!"
-    if storage == 200:
-        stats['storage'] = "down"
-        
+        stats['audit'] = "Down"
+    if storage.status_code == 200:
+        stats['storage'] = "Running"
     else:
-        stats['storage'] = "running"
+        stats['storage'] = "Down"
+    if processing.status_code == 200:
+        stats['processing'] = "Running"
+    else:
+        stats['processing'] = "Down"
+    if receiver.status_code == 200:
+        stats['receiver'] = "Running"
+    else:
+        stats['receiver'] = "Down"
         
 
     print(stats)
