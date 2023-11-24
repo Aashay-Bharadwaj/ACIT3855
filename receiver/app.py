@@ -81,6 +81,8 @@ def report_standard_order(body):
 
     return NoContent, 201 # NoContent means there is no response message
 
+def get_health():
+    return 200
 
 # specification_dir is where to look for OpenAPI specifications. Empty string means
 # look in the current directory.
