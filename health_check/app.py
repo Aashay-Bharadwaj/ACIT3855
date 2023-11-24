@@ -3,7 +3,7 @@ import datetime
 import requests
 import json
 import yaml
-import logging
+import logging.config
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Response
 
