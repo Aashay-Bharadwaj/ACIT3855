@@ -53,13 +53,11 @@ def populate_status():
     time = stats.get('last_updated', datetime.datetime.now())
     print(time)
 
-    start_time = time.time()
-    audit = requests.get(app_config["eventstore"]["url"] + "/health")
-    end_time = time.time()
+    
+    audit = requests.get(app_config["eventstore"]["url"] + "/health", timeout=5)
+    
 
-    elapsed_time = end_time - start_time
-
-    if elapsed_time > 5:
+    if audit.response_code == 200:
         stats['audit'] = "down"
         logger.warning(f"Request took {elapsed_time} seconds, which is more than 5 seconds.")
     else:
