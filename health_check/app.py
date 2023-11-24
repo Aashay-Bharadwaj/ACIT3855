@@ -73,7 +73,7 @@ def get_health():
 
 def init_scheduler():
     sched = BackgroundScheduler(daemon=True)
-    sched.add_job(populate_stats, 'interval', seconds=app_config['scheduler']['period_sec'])
+    sched.add_job(populate_status, 'interval', seconds=app_config['scheduler']['period_sec'])
     sched.start()
 
 app = connexion.FlaskApp(__name__, specification_dir='')
