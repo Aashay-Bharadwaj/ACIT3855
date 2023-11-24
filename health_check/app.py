@@ -56,25 +56,25 @@ def populate_status():
     try:    
         audit = requests.get(app_config["eventstore"]["url_audit"] + "/health", timeout=5)
         stats["audit"] = "Running"
-    except audit.exceptions.Timeout:
+    except audit.exceptions.RequestException:
         print("Timed out")
         stats["audit"] = "Down"
     try:    
         receiver = requests.get(app_config["eventstore"]["url_receiver"] + "/health", timeout=5)
         stats["receiver"] = "Running"
-    except receiver.exceptions.Timeout:
+    except receiver.exceptions.RequestException:
         print("Timed out")
         stats["receiver"] = "Down"
     try:    
         processing = requests.get(app_config["eventstore"]["url_processing"] + "/health", timeout=5)
         stats["processing"] = "Running"
-    except processing.exceptions.Timeout:
+    except processing.exceptions.RequestException:
         print("Timed out")
         stats["processing"] = "Down"
     try:    
         storage = requests.get(app_config["eventstore"]["url_storage"] + "/health", timeout=5)        
         stats["storage"] = "Running"
-    except storage.exceptions.Timeout:
+    except storage.exceptions.RequestException:
         print("Timed out")
         stats["storage"] = "Down"
         
