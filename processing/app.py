@@ -82,6 +82,9 @@ def populate_stats():
         outfile.write(json_obj)
     print('written timestamp')
 
+def get_health():
+    return 200
+
 def init_scheduler():
     sched = BackgroundScheduler(daemon=True)
     sched.add_job(populate_stats,
