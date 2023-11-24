@@ -1,7 +1,7 @@
 {
-    "receiver": "Running",
+    "receiver": "Down",
     "storage": "Down",
-    "processing": "Running",
-    "audit": "test",
+    "processing": "Down",
+    "audit": "Down",
     "last_update": "2022-03-22T11:12:23"
 }
