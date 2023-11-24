@@ -27,11 +27,11 @@ def get_status():
         return Response("Status records do not exist", 404)
     
     obj = {
-        "receiver": status.get('receiver', 'unknown'),
-        "storage": status.get("storage", 'unknown'),
-        "audit": status.get("audit", 'unknown'),
-        "processing": status.get("processing", 'unknown'),
-        "last_updated": status.get('last_updated', 'unknown')
+        "receiver": 'down',
+        "storage": 'down',
+        "audit": 'down',
+        "processing": 'down',
+        "last_updated": "unknown"
     }
     
     logger.debug(f'{obj}')
