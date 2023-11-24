@@ -7,6 +7,14 @@ info:
     email: bharadwajaashay@gmail.com
 
 paths:
+  /health:
+    get:
+      summary: gets health update on service
+      operationId: app.get_health
+      description: Gets Audit service health
+      responses:
+        '200':
+          description: Working
   /stats:
     get:
       summary: Gets the event stats
