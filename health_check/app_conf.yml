@@ -2,6 +2,6 @@ version: 1
 datastore:
   filename: status_record.json
 scheduler:
-  period_sec: 5
+  period_sec: 20
 eventstore:
   url: http://localhost:8110
