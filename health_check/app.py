@@ -6,7 +6,7 @@ import yaml
 import logging.config
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Response
-
+CHECK_INTERVAL = 20
 # Load configurations
 with open('app_conf.yml', 'r') as f:
     app_config = yaml.safe_load(f.read())
@@ -73,7 +73,7 @@ def get_health():
 
 def init_scheduler():
     sched = BackgroundScheduler(daemon=True)
-    sched.add_job(populate_status, 'interval', seconds=20)
+    sched.add_job(populate_status, 'interval', seconds=CHECK_INTERVAL)
     sched.start()
 
 app = connexion.FlaskApp(__name__, specification_dir='')
