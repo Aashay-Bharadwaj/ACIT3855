@@ -63,7 +63,7 @@ def populate_status():
         stats['audit'] = "down"
         
     else:
-        stats['audit'] = "running"
+        stats['audit'] = "running!"
     if storage == 200:
         stats['storage'] = "down"
         
