@@ -75,8 +75,11 @@ def populate_status():
         stats['receiver'] = "Running"
     else:
         stats['receiver'] = "Down"
-        
-
+    stats['last_update'] = datetime.datetime.now()
+    stats = json.dumps(stats, indent=4, default=str)
+    with open(app_config['datastore']['filename'], "w") as outfile:
+        outfile.write(stats)
+    print("Stats Written \n")
     print(stats)
 
 def get_health():
