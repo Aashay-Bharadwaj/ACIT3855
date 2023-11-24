@@ -16,13 +16,9 @@ paths:
       responses:
         '200':
           description: Successful response
-          
           content:
             application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/ReadingStats'
+              example:
                 receiver: "Running"
                 storage: "Down"
                 processing: "Running"
@@ -30,30 +26,4 @@ paths:
                 last_update: "2022-03-22T11:12:23"
         '500':
           description: Internal Server Error
-  components:
-  schemas:
-    ReadingStats:
-      required:
-        receiver
-        storage
-        processing
-        audit
-        last_update
-      properties:
-        receiver:
-          type: string
-          example: "Running"
-        storage:
-          type: string
-          example: "Down"
-        processing:
-          type: string
-          example: "Running"
-        audit:
-          type: string
-          example: "Down"
-        timestamp:
-          type: string
-          example: "2023-11-02 09:41:25.829461"
-      type: object
-
+  
