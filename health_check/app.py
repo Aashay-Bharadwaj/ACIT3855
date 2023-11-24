@@ -38,7 +38,7 @@ def get_status():
 
     logger.info("Request has completed.")
 
-    return jsonify(status)
+    return Response(json.dumps(status), 200)
 
 def populate_status():
     logger.info("Starting service check process")
