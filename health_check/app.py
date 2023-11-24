@@ -58,7 +58,7 @@ def populate_status():
     storage = requests.get(app_config["eventstore"]["url_storage"] + "/health", timeout=5)
     processing = requests.get(app_config["eventstore"]["url_processing"] + "/health", timeout=5)
     receiver = requests.get(app_config["eventstore"]["url_receiver"] + "/health", timeout=5)
-    print(audit)
+    print(audit.status_code)
     if "200" in audit:
         stats['audit'] = "running🔥"
         
