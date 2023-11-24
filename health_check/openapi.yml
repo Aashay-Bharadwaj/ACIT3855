@@ -1,0 +1,28 @@
+openapi: 3.0.0
+info:
+  description: This API checks health for all services
+  version: "1.0.0"
+  title: Reading API
+  contact:
+    email: mmulder10@bcit.ca
+tags:
+  - name: store
+    description: Operations available to medical devices
+paths:
+  /status:
+    get:
+      summary: Get the status of all services
+      operationId: app.get_status
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                receiver: "Running"
+                storage: "Down"
+                processing: "Running"
+                audit: "Running"
+                last_update: "2022-03-22T11:12:23"
+        '500':
+          description: Internal Server Error
