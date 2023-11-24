@@ -94,8 +94,9 @@ def init_scheduler():
     sched = BackgroundScheduler(daemon=True)
     sched.add_job(populate_status, 'interval', seconds=app_config['scheduler']['period_sec'])
     sched.start()
-
 app = connexion.FlaskApp(__name__, specification_dir='')
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
 app.add_api("openapi.yml", strict_validation=True, validate_responses=True)
 
 if __name__ == '__main__':
