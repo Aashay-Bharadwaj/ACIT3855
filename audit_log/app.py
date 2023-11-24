@@ -190,7 +190,8 @@ def get_standard_order(index):
         logger.error("Could not find Inventory Item at index %d" % index)
     return { "message": "Not Found"}, 404
 
-
+def get_health():
+    return 200
 
 def process_messages():
     """ Process event messages """
