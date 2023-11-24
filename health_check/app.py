@@ -6,6 +6,7 @@ import yaml
 import logging.config
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Response
+from flask_cors import CORS, cross_origin
 CHECK_INTERVAL = 20
 # Load configurations
 with open('app_conf.yml', 'r') as f:
