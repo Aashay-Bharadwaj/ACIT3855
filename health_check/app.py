@@ -26,19 +26,19 @@ def get_status():
     except FileNotFoundError:
         return Response("Status records do not exist", 404)
     
-    obj = {
-        "receiver": 'down',
-        "storage": 'down',
-        "audit": 'down',
-        "processing": 'down',
-        "last_updated": "unknown"
-    }
+    # obj = {
+    #     "receiver": 'down',
+    #     "storage": 'down',
+    #     "audit": 'down',
+    #     "processing": 'down',
+    #     "last_updated": "unknown"
+    # }
     
-    logger.debug(f'{obj}')
+    logger.debug(f'{status}')
 
     logger.info("Request has completed.")
 
-    return jsonify(obj)
+    return jsonify(status)
 
 def populate_status():
     logger.info("Starting service check process")
