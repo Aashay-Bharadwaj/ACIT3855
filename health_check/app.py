@@ -54,14 +54,21 @@ def populate_status():
     print(time)
 
     
-    audit = requests.get(app_config["eventstore"]["url"] + "/health", timeout=5)
-    
-
+    audit = requests.get(app_config["eventstore"]["url_audit"] + "/health", timeout=5)
+    storage = requests.get(app_config["eventstore"]["url_storage"] + "/health", timeout=5)
+    processing = requests.get(app_config["eventstore"]["url_processing"] + "/health", timeout=5)
+    receiver = requests.get(app_config["eventstore"]["url_receiver"] + "/health", timeout=5)
+    print(audit)
     if audit == 200:
         stats['audit'] = "down"
         
     else:
         stats['audit'] = "running"
+    if storage == 200:
+        stats['storage'] = "down"
+        
+    else:
+        stats['storage'] = "running"
         
 
     print(stats)
