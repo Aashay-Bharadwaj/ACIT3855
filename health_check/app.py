@@ -38,7 +38,7 @@ def get_status():
 
     logger.info("Request has completed.")
 
-    return Response(json.dumps(obj), status=200, mimetype='application/json')
+    return Response(json.dumps(obj),200)
 
 def populate_status():
     logger.info("Starting service check process")
