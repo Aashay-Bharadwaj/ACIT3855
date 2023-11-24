@@ -2,16 +2,12 @@ import connexion
 import datetime
 import requests
 import json
-from flask import Response
-from flask_cors import CORS, cross_origin
 import yaml
 import logging, logging.config
-import uuid
 from apscheduler.schedulers.background import BackgroundScheduler
 
-app = connexion.FlaskApp(__name__, specification_dir='')
-CORS(app.app)
-app.app.config['CORS_HEADERS'] = 'Content-Type'
+
+
 
 with open('app_conf.yml', 'r') as f:
     app_config = yaml.safe_load(f.read())
@@ -74,7 +70,7 @@ def init_scheduler():
                 'interval',
                 seconds=app_config['scheduler']['period_sec'])
     sched.start()
-
+app = connexion.FlaskApp(__name__, specification_dir='')
 app.add_api("openapi.yml", strict_validation=True, validate_responses=True)
 
 if __name__ == '__main__':
