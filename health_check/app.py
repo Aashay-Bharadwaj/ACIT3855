@@ -53,28 +53,33 @@ def populate_status():
     time = stats.get('last_updated', datetime.datetime.now())
     print(time)
 
-    
-    audit = requests.get(app_config["eventstore"]["url_audit"] + "/health", timeout=5)
-    storage = requests.get(app_config["eventstore"]["url_storage"] + "/health", timeout=5)
-    processing = requests.get(app_config["eventstore"]["url_processing"] + "/health", timeout=5)
-    receiver = requests.get(app_config["eventstore"]["url_receiver"] + "/health", timeout=5)
-    print(audit.status_code)
-    if audit.status_code == 200:
-        stats['audit'] = "Running"
-    else:
-        stats['audit'] = "Down"
-    if storage.status_code == 200:
-        stats['storage'] = "Running"
-    else:
-        stats['storage'] = "Down"
-    if processing.status_code == 200:
-        stats['processing'] = "Running"
-    else:
-        stats['processing'] = "Down"
-    if receiver.status_code == 200:
-        stats['receiver'] = "Running"
-    else:
-        stats['receiver'] = "Down"
+    try:    
+        audit = requests.get(app_config["eventstore"]["url_audit"] + "/health", timeout=5)
+        stats["audit"] = "Running"
+    except requests.exceptions.Timeout:
+        print("Timed out")
+        stats["audit"] = "Down"
+    try:    
+        receiver = requests.get(app_config["eventstore"]["url_receiver"] + "/health", timeout=5)
+        stats["receiver"] = "Running"
+    except requests.exceptions.Timeout:
+        print("Timed out")
+        stats["receiver"] = "Down"
+    try:    
+        processing = requests.get(app_config["eventstore"]["url_processing"] + "/health", timeout=5)
+        stats["processing"] = "Running"
+    except requests.exceptions.Timeout:
+        print("Timed out")
+        stats["processing"] = "Down"
+    try:    
+        storage = requests.get(app_config["eventstore"]["url_storage"] + "/health", timeout=5)        
+        stats["storage"] = "Running"
+    except requests.exceptions.Timeout:
+        print("Timed out")
+        stats["storage"] = "Down"
+        
+        
+        
     stats['last_update'] = datetime.datetime.now()
     stats = json.dumps(stats, indent=4, default=str)
     with open(app_config['datastore']['filename'], "w") as outfile:
