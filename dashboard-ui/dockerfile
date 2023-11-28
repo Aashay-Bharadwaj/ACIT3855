@@ -1,5 +1,4 @@
 FROM node:13.12.0-alpine
-  
 # Set working directory
 WORKDIR /app
 # Add `/app/node_modules/.bin` to $PATH
@@ -11,6 +10,6 @@ RUN npm install
 RUN npm install react-scripts@3.4.1 -g
 # add app
 COPY . ./
-# Start app
 EXPOSE 3000
+# Start app
 CMD ["npm", "start"]
