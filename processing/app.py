@@ -39,8 +39,6 @@ def get_stats():
         with open(app_config['datastore']['filename'], 'r') as file:
             stats = json.load(file)
     except FileNotFoundError:
-        stats = {"num_inventory_items": 0, "num_orders": 0,
-           "max_item_price": 0, "max_order_price": 0, "last_updated": 0}
         return Response("Statistics do not exist", 404)
     
     obj = {"num_inventory_items": stats['num_inventory_items'], "num_orders": stats["num_orders"],
@@ -56,9 +54,12 @@ def get_stats():
 
 def populate_stats():
     logger.info("Start POPULATE stats Processing")
-
-    with open(app_config['datastore']['filename'], 'r') as file:
-        stats = json.load(file)
+    try:
+        with open(app_config['datastore']['filename'], 'r') as file:
+            stats = json.load(file)
+    except FileNotFoundError:
+        stats = {"num_inventory_items": 0, "num_orders": 0,
+           "max_item_price": 0, "max_order_price": 0, "last_updated": 0}
     
     time = stats['last_updated']
     print(time)
