@@ -102,7 +102,7 @@ app = connexion.FlaskApp(__name__, specification_dir='')
 # openapi.yml - name of the OpenAPI Specification yaml file
 # strict_validation - whether to valid requests parmameters or messages
 # validate_responses - wheter to valid response codes or messages
-app.add_api("openapi.yml", strict_validation=True, validate_responses=True)
+app.add_api("openapi.yml",base_path="/receiver", strict_validation=True, validate_responses=True)
 
 if __name__ == "__main__":
     app.run(port=8080) # Uses the built-in Flask server, port is explicit since
