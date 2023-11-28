@@ -44,7 +44,9 @@ services:
   audit_log:
     image: audit_log
     ports:
-      - "8110:8110"
+      - "8110"
+    networks:
+      - "api.network"
     environment:
       - TARGET_ENV=test
     volumes:
@@ -56,7 +58,9 @@ services:
   receiver:
     image: receiver
     ports:
-      - "8080:8080"
+      - "8080"
+    networks:
+      - "api.network"
     environment:
       - TARGET_ENV=test
     volumes:
@@ -68,7 +72,9 @@ services:
   storage:
     image: storage
     ports:
-      - "8090:8090"
+      - "8090"
+    networks:
+      - "api.network"
     environment:
       - TARGET_ENV=test
     volumes:
@@ -81,7 +87,9 @@ services:
   processing:
     image: processing
     ports:
-      - "8100:8100"
+      - "8100"
+    networks:
+      - "api.network"
     network_mode: "host"
     environment:
       - TARGET_ENV=test
