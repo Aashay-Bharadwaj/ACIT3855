@@ -48,7 +48,7 @@ services:
     environment:
       - TARGET_ENV=test  # Setting the TARGET_ENV environment variable to "test"
     volumes:
-      - /home/azureuser/config/audit_log: /config
+      - /home/azureuser/config/audit_log:/config
     depends_on:
       - "kafka"
 
@@ -59,7 +59,7 @@ services:
     environment:
       - TARGET_ENV=test  # Setting the TARGET_ENV environment variable to "test"
     volumes:
-      - /home/azureuser/config/receiver: /config
+      - /home/azureuser/config/receiver:/config
     depends_on:
       - "kafka"
 
@@ -70,7 +70,7 @@ services:
     environment:
       - TARGET_ENV=test  # Setting the TARGET_ENV environment variable to "test"
     volumes:
-      - /home/azureuser/config/storage: /config
+      - /home/azureuser/config/storage:/config
     depends_on:
       - "kafka"
       - "db"
@@ -83,7 +83,7 @@ services:
     environment:
       - TARGET_ENV=test  # Setting the TARGET_ENV environment variable to "test"
     volumes:
-      - /home/azureuser/config/processing: /config
+      - /home/azureuser/config/processing:/config
     depends_on:
       - "storage"
 
