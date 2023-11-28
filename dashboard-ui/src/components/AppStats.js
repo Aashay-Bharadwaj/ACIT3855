@@ -8,7 +8,7 @@ export default function AppStats() {
 
 	const getStats = () => {
 	
-        fetch(`http://kakfa.eastus2.cloudapp.azure.com/audit_log/stats`)
+        fetch(`http://kakfa.eastus2.cloudapp.azure.com/processing/stats`)
             .then(res => res.json())
             .then((result)=>{
 				console.log("Received Stats")
