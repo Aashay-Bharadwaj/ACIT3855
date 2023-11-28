@@ -7,7 +7,7 @@ export default function HealthStats() {
     const [error, setError] = useState(null);
 
     const getStats = () => {
-        fetch(`http://kakfa.eastus2.cloudapp.azure.com:8120/status`)
+        fetch(`http://kakfa.eastus2.cloudapp.azure.com/health-check/status`)
             .then((res) => res.json())
             .then(
                 (result) => {
