@@ -111,7 +111,9 @@ services:
   health-check:
     image: health-check
     ports:
-      - "8120:8120"
+      - "8120"
+    networks:
+      - "api.network"
       
   nginx:
     image: nginx:latest
