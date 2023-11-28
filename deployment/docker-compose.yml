@@ -103,7 +103,9 @@ services:
   dashboard:
     image: dashboard
     ports:
-      - "3000:3000"
+      - "8090"
+    networks:
+      - "api.network"
     depends_on:
       - "processing"
 
