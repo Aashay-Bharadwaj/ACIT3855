@@ -38,7 +38,7 @@ def get_stats():
     try:
         with open(app_config['datastore']['filename'], 'r') as file:
             stats = json.load(file)
-    except:
+    except FileNotFoundError:
         stats = {"num_inventory_items": 0, "num_orders": 0,
            "max_item_price": 0, "max_order_price": 0, "last_updated": 0}
         return Response("Statistics do not exist", 404)
