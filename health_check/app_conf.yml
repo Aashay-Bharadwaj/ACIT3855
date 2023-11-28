@@ -4,7 +4,7 @@ datastore:
 scheduler:
   period_sec: 20
 eventstore:
-  url_audit: http://kakfa.eastus2.cloudapp.azure.com:8110
-  url_storage: http://kakfa.eastus2.cloudapp.azure.com:8110
-  url_receiver: http://kakfa.eastus2.cloudapp.azure.com:8110
-  url_processing: http://kakfa.eastus2.cloudapp.azure.com:8110
+  url_audit: http://kakfa.eastus2.cloudapp.azure.com/audit_log
+  url_storage: http://kakfa.eastus2.cloudapp.azure.com/storage
+  url_receiver: http://kakfa.eastus2.cloudapp.azure.com/receiver
+  url_processing: http://kakfa.eastus2.cloudapp.azure.com/processing
