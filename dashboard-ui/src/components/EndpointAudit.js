@@ -5,8 +5,10 @@ export default function EndpointAudit(props) {
     const [isLoaded, setIsLoaded] = useState(false);
     const [log, setLog] = useState(null);
     const [error, setError] = useState(null)
-	const rand_val = Math.floor(Math.random() * 100); // Get a random event from the event store
+    const [index, setIndex] = useState(null);
+    const rand_val = Math.floor(Math.random() * 100); // Get a random event from the event store
     const  rand_index = Math.floor(Math.random() * 20) + 1; 
+    setIndex(rand_index);
     const getAudit = () => {
         fetch(`http://kakfa.eastus2.cloudapp.azure.com/audit_log/${props.endpoint}?index=${rand_index}`)
             .then(res => res.json())
@@ -32,7 +34,7 @@ export default function EndpointAudit(props) {
         
         return (
             <div>
-                <h3>{props.endpoint}-{rand_index}</h3>
+                <h3>{props.endpoint}-{index}</h3>
                 {JSON.stringify(log)}
             </div>
         )
