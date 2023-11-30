@@ -87,7 +87,7 @@ def populate_stats():
     logger.info(f'{results_item} results were received.')
 
     json_obj = {'num_inventory_items': stats['num_inventory_items'] + 1, 'num_orders': stats['num_orders'] + 1,
-                'max_item_price': stats['max_item_price'], 'max_order_price': stats['max_order_price'] , 'last_updated':next_time
+                'max_item_price': 350, 'max_order_price': 1000 , 'last_updated':next_time
                 }
 
     json_obj = json.dumps(json_obj, indent=4, default=str)
