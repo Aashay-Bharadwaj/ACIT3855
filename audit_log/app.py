@@ -229,7 +229,6 @@ def process_messages():
         msg_str = msg.value.decode('utf-8')
         msg = json.loads(msg_str)
         logger.info("Message: %s" % msg)
-
         payload = msg["payload"]
 
         if msg["type"] == "item":  # Change this to your event type
