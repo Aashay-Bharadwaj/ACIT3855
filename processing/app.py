@@ -8,7 +8,6 @@ import yaml
 import logging, logging.config
 import uuid
 from apscheduler.schedulers.background import BackgroundScheduler
-
 import os
 if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
