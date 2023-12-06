@@ -48,7 +48,7 @@ services:
       - my-db:/var/lib/mysql
 
   audit_log:
-    image: audit_log
+    image: aashaybharadwaj/audit_log
     ports:
       - "8110"
     networks:
@@ -62,7 +62,7 @@ services:
       - "kafka"
 
   receiver:
-    image: receiver
+    image: aashaybharadwaj/receiver
     ports:
       - "8080"
     networks:
@@ -76,7 +76,7 @@ services:
       - "kafka"
 
   storage:
-    image: storage
+    image: aashaybharadwaj/storage
     ports:
       - "8090"
     networks:
@@ -91,7 +91,7 @@ services:
       - "db"
 
   processing:
-    image: processing
+    image: aashaybharadwaj/processing
     ports:
       - "8100"
     networks:
