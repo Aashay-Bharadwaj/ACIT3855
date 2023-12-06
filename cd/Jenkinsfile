@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Deploy') {
+            steps {
+                script {
+                    // Define your SSH credentials ID (replace 'your-ssh-credentials-id' with the actual ID)
+                    def sshCredentialsId = 'ssh-agent'
+
+                    // Azure VM details
+                    def azureUser = 'azureuser'
+                    def azureHost = '172.203.81.213'
+
+                    // Start the SSH agent and use the specified credentials
+                    sshagent(credentials: [sshCredentialsId]) {
+                        // SSH command to execute on the remote server
+                        sh "ssh ${azureUser}@${azureHost} 'echo Hello from Jenkins'"
+                    }
+                }
+            }
+        }
+
+        // Add more stages as needed
+    }
+}
