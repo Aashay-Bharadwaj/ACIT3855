@@ -16,7 +16,7 @@ pipeline {
                     sshagent(credentials: [sshCredentialsId]) {
                         // SSH command to execute on the remote server
                     
-                        sh "ssh -o StrictHostKeyChecking=no azureuser@172.203.81.213 'cd ACIT3855/deployment && git pull && docker pull aashaybharadwaj/processing && docker-compose up -d'"
+                        sh "ssh -o StrictHostKeyChecking=no azureuser@172.203.81.213 'cd ACIT3855/deployment && docker pull aashaybharadwaj/processing && docker-compose up -d'"
                         
 
                     }
