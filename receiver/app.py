@@ -1,4 +1,3 @@
-import connexion
 from connexion import NoContent
 import yaml
 
@@ -11,7 +10,7 @@ import datetime
 
 import json
 from pykafka import KafkaClient
-
+import connexion
 import os
 if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
