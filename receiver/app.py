@@ -1,4 +1,3 @@
-from connexion import NoContent
 import yaml
 
 import logging
@@ -7,11 +6,12 @@ import requests
 import uuid
 import random
 import datetime
-
+import os
 import json
 from pykafka import KafkaClient
 import connexion
-import os
+from connexion import NoContent
+
 if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
     app_conf_file = "/config/app_conf.yml"
