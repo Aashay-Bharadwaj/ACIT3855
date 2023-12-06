@@ -56,6 +56,7 @@ def get_stats():
 
 
 def populate_stats():
+    logger.info("Assignment 3 Demo")
     logger.info("Start POPULATE stats Processing")
     try:
         with open(app_config['datastore']['filename'], 'r') as file:
