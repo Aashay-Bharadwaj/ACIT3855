@@ -97,7 +97,7 @@ def report_standard_order(body):
 
 def get_inventory_item(timestamp):
     """ Gets new blood pressure readings after the timestamp """
-
+    logger.info("Storage A3 demo")
     session = DB_SESSION()
 
     timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
