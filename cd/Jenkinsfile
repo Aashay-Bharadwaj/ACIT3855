@@ -15,6 +15,7 @@ pipeline {
                     // Start the SSH agent and use the specified credentials
                     sshagent(credentials: [sshCredentialsId]) {
                         // SSH command to execute on the remote server
+                        sh "chmod 600 /var/jenkins_home/workspace/microservices_cd@tmp/private_key_7271349975567045728.key"
                         sh "ssh -o StrictHostKeyChecking=no azureuser@172.203.81.213 'echo Hello from Jenkins'"
 
                     }
