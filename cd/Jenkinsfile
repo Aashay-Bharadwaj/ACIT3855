@@ -15,7 +15,8 @@ pipeline {
                     // Start the SSH agent and use the specified credentials
                     sshagent(credentials: [sshCredentialsId]) {
                         // SSH command to execute on the remote server
-                        sh "ssh ${azureUser}@${azureHost} 'echo Hello from Jenkins'"
+                        sh "ssh -o StrictHostKeyChecking=no azureuser@172.203.81.213 'echo Hello from Jenkins'"
+
                     }
                 }
             }
