@@ -1,0 +1,8 @@
+@Library("ci_functions_a3@main") _
+
+// Call the 'python_build()' method from the shared library
+python_build('audit_log')
+python_build('receiver')
+python_build('processing')
+python_build('storage')
+
