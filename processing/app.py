@@ -1,14 +1,18 @@
-import connexion
-import datetime
-import requests
 import json
-from flask import Response
-from flask_cors import CORS, cross_origin
-import yaml
-import logging, logging.config
-import uuid
-from apscheduler.schedulers.background import BackgroundScheduler
 import os
+import datetime
+import logging
+import logging.config
+
+import requests
+import yaml
+
+from flask import Response
+from flask_cors import CORS
+
+from apscheduler.schedulers.background import BackgroundScheduler
+import connexion
+
 if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
     app_conf_file = "/config/app_conf.yml"
@@ -66,8 +70,6 @@ def populate_stats():
     item = requests.get(app_config["eventstore"]["url"] + "/inventory-item?timestamp=" + '2013-11-23T08:30:00Z')
     order = requests.get(app_config["eventstore"]["url"] + "/standard-order?timestamp=" + '2013-11-23T08:30:00Z')
     results_item = []
-    results_order = []
-    item_no = 0
     order_no = 0
     try:
         for i in item.json():
