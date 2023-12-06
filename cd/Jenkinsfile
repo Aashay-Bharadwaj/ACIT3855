@@ -16,9 +16,8 @@ pipeline {
                     sshagent(credentials: [sshCredentialsId]) {
                         // SSH command to execute on the remote server
                     
-                        sh "ssh -o StrictHostKeyChecking=no azureuser@172.203.81.213"
-                        sh "cd ACIT3855/deployment"
-                        sh "pwd"
+                        sh "ssh -o StrictHostKeyChecking=no azureuser@172.203.81.213 'cd ACIT3855/deployment' & 'pwd'"
+                        
 
                     }
                 }
