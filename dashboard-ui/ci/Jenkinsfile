@@ -1,0 +1,4 @@
+@Library("ci_functions_a3@main") _
+
+// Call the 'python_build()' method from the shared library
+python_build('dashboard-ui', 'dashboard-ui', 'dashboard-ui_app')
