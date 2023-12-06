@@ -1,4 +1,4 @@
 @Library("ci_functions_a3@main") _
 
 // Call the 'python_build()' method from the shared library
-python_build('storage')
+python_build('storage', 'storage', 'storage_app')
